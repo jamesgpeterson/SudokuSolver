@@ -30,9 +30,9 @@ bool MainWindow::ApplyRule_3_ToGroup(int *group)
         int n1 = CellTriples[i][0];
         int n2 = CellTriples[i][1];
         int n3 = CellTriples[i][2];
-        CCell *pCell1 = &vCells[group[n1]];
-        CCell *pCell2 = &vCells[group[n2]];
-        CCell *pCell3 = &vCells[group[n3]];
+        CCell *pCell1 = &m_vCells[group[n1]];
+        CCell *pCell2 = &m_vCells[group[n2]];
+        CCell *pCell3 = &m_vCells[group[n3]];
 
         if (pCell1->IsSolved() || pCell2->IsSolved() || pCell3->IsSolved())
         {
@@ -55,7 +55,7 @@ bool MainWindow::ApplyRule_3_ToGroup(int *group)
                 continue;
             }
             int n = group[j];
-            CCell *pCell = &vCells[n];
+            CCell *pCell = &m_vCells[n];
             int m1, m2, m3;
             CellUnion.GetThreeMarks(&m1, &m2, &m3);
             if (pCell->IsMarked(m1))

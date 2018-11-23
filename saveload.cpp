@@ -23,7 +23,7 @@ void MainWindow::on_pushButton_SaveGame_clicked()
 
     for (int i=0; i<81; i++)
     {
-        CCell *pCell = &vCells[i];
+        CCell *pCell = &m_vCells[i];
         int n = pCell->SolvedValue();
         fprintf(fp, "%d\n", n);
     }
@@ -53,7 +53,7 @@ void MainWindow::on_pushButton_LoadGame_clicked()
         int n;
         fscanf(fp, "%d\n", &n);
         //qDebug("%d", n);
-        CCell *pCell = &vCells[i];
+        CCell *pCell = &m_vCells[i];
         if (n == -1)
         {
             pCell->SetAllMarks();

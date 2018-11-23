@@ -19,8 +19,8 @@ bool MainWindow::ApplyRule_2_ToGroup(int *group)
     {
         int n1 = CellPairs[i][0];
         int n2 = CellPairs[i][1];
-        CCell *pCell1 = &vCells[group[n1]];
-        CCell *pCell2 = &vCells[group[n2]];
+        CCell *pCell1 = &m_vCells[group[n1]];
+        CCell *pCell2 = &m_vCells[group[n2]];
         if ( (pCell1->GetMarkCount() == 2) && (CCell::equal(pCell1, pCell2)) )
         {
             int m1, m2;
@@ -31,7 +31,7 @@ bool MainWindow::ApplyRule_2_ToGroup(int *group)
                 {
                     continue;
                 }
-                CCell *pCell = &vCells[group[j]];
+                CCell *pCell = &m_vCells[group[j]];
                 if (pCell->IsMarked(m1))
                 {
                     pCell->RemoveMark(m1);

@@ -42,7 +42,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
         return;
     }
 
-    CCell *pCell = &vCells[m_nCurrentCellIndex];
+    CCell *pCell = &m_vCells[m_nCurrentCellIndex];
     int nMarkIndex = e->key() - Qt::Key_1;
 
     if (ui->checkBox_Mark->isChecked())
@@ -75,7 +75,7 @@ double  MainWindow::CountPossibilities()
     double fPossibilities = 1.0;
     for (int i=0; i<81; i++)
     {
-        CCell *pCell = &vCells[i];
+        CCell *pCell = &m_vCells[i];
         int n = pCell->GetMarkCount();
         fPossibilities *= n;
     }
@@ -95,7 +95,7 @@ void MainWindow::on_pushButton_Reset_clicked()
 {
     for (int i=0; i<81; i++)
     {
-        CCell *pCell = &vCells[i];
+        CCell *pCell = &m_vCells[i];
         pCell->SetAllMarks();
         DrawCell(i);
     }
@@ -107,7 +107,7 @@ void MainWindow::on_pushButton_Reset_clicked()
 void MainWindow::DrawCell(int i)
 {
     QPushButton *pButton = vButtons[i];
-    CCell *pCell = &vCells[i];
+    CCell *pCell = &m_vCells[i];
     QString sText;
     int nSolvedValue = pCell->SolvedValue();
     if (nSolvedValue < 0)
@@ -198,7 +198,7 @@ void MainWindow::on_pushButton_Save_clicked()
 {
     for (int i=0; i<81; i++)
     {
-        vCells_saved[i].Copy(&vCells[i]);
+        vCells_saved[i].Copy(&m_vCells[i]);
     }
 }
 
@@ -206,7 +206,7 @@ void MainWindow::on_pushButton_Restore_clicked()
 {
     for (int i=0; i<81; i++)
     {
-        vCells[i].Copy(&vCells_saved[i]);
+        m_vCells[i].Copy(&vCells_saved[i]);
         DrawCell(i);
     }
 
@@ -219,7 +219,7 @@ bool MainWindow::on_pushButton_Guess_clicked()
     std::vector<int> vCellIndices;
     for (int i=0; i<81; i++)
     {
-        if (vCells[i].GetMarkCount() == 2)
+        if (m_vCells[i].GetMarkCount() == 2)
         {
             vCellIndices.push_back(i);
         }
@@ -233,14 +233,21 @@ bool MainWindow::on_pushButton_Guess_clicked()
     CCell vCells_backup[81];
     for (int i=0; i<81; i++)
     {
-        vCells_backup[i].Copy(&vCells[i]);
+        vCells_backup[i].Copy(&m_vCells[i]);
     }
 
     for (unsigned int i=0; i<vCellIndices.size(); i++)
     {
         int m1, m2;
-        CCell *pCell = &vCells[vCellIndices[i]];
+        CCell *pCell = &m_vCells[vCellIndices[i]];
         pCell->GetTwoMarks(&m1, &m2);
+
+        // Restore saved state
+        for (int i=0; i<81; i++)
+        {
+            m_vCells[i].Copy(&vCells_backup[i]);
+        }
+
         pCell->SetMark(m1);
         ApplyAllRules();
         double count = CountPossibilities();
@@ -249,14 +256,18 @@ bool MainWindow::on_pushButton_Guess_clicked()
             DrawCell(vCellIndices[i]);
             return true;
         }
-        else if (count == 0.0)
+
+        // Restore saved state
+        for (int i=0; i<81; i++)
         {
-            for (int j=0; j<81; j++)
-            {
-                vCells[j].Copy(&vCells_backup[j]);
-                DrawCell(j);
-            }
-            pCell->SetMark(m2);
+            m_vCells[i].Copy(&vCells_backup[i]);
+        }
+
+        pCell->SetMark(m2);
+        ApplyAllRules();
+        count = CountPossibilities();
+        if (count == 1.0)
+        {
             DrawCell(vCellIndices[i]);
             return true;
         }

@@ -11,7 +11,7 @@ bool MainWindow::ApplyRule_1_ToGroup(int *group)
         std::vector<int> vList;
         for (int i=0; i<9; i++)
         {
-            CCell *pCell = &vCells[group[i]];
+            CCell *pCell = &m_vCells[group[i]];
             if (pCell->IsMarked(v))
             {
                 vList.push_back(group[i]);
@@ -21,7 +21,7 @@ bool MainWindow::ApplyRule_1_ToGroup(int *group)
         {
             continue;
         }
-        CCell *pCell = &vCells[vList[0]];
+        CCell *pCell = &m_vCells[vList[0]];
         if (pCell->SolvedValue() < 0)
         {
             pCell->SetMark(v);

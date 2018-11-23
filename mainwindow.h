@@ -152,7 +152,7 @@ private:
 private:
     Ui::MainWindow *ui;
     QPushButton *vButtons[81];
-    CCell vCells[81];
+    CCell m_vCells[81];
     CCell vCells_saved[81];
     int m_nCurrentCellIndex;
     int m_vColumns[9][9];

@@ -14,7 +14,7 @@ bool MainWindow::ApplyRule_0_ToGroup(int *group)
     bool bModificationMade = false;
     for (int i=0; i<9; i++)
     {
-        CCell *pCell = &vCells[group[i]];
+        CCell *pCell = &m_vCells[group[i]];
         int v = pCell->SolvedValue();
         if (v < 0)
         {
@@ -27,7 +27,7 @@ bool MainWindow::ApplyRule_0_ToGroup(int *group)
             {
                 continue;
             }
-            CCell *pCell_2 = &vCells[group[j]];
+            CCell *pCell_2 = &m_vCells[group[j]];
             if (pCell_2->IsMarked(v))
             {
                 bModificationMade = true;
